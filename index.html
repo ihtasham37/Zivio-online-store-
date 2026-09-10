@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" style="color-scheme: light;">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="theme-color" content="#be185d" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="Ali Cart" />
+
+    <!-- Google Fonts for Luxury Baby Boutique Theme -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500..800;1,500..800&family=Plus+Jakarta+Sans:ital,wght@0,300..800;1,300..800&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+    
+    <script>
+      // Clean URL redirects for PDF receipt links and external links (handles both search and hash params on mobile PDF viewers)
+      (function() {
+        try {
+          var searchParams = new URLSearchParams(window.location.search || '');
+          var hash = window.location.hash || '';
+          var hashSearchIndex = hash.indexOf('?');
+          var hashParams = hashSearchIndex !== -1 ? new URLSearchParams(hash.substring(hashSearchIndex)) : new URLSearchParams();
+
+          var p = searchParams.get('product') || searchParams.get('p') || searchParams.get('productId') || hashParams.get('product') || hashParams.get('p') || hashParams.get('productId');
+          var track = searchParams.get('track') || searchParams.get('phone') || hashParams.get('track') || hashParams.get('phone');
+          var email = searchParams.get('email') || hashParams.get('email') || '';
+          var to = searchParams.get('to') || searchParams.get('redirect') || hashParams.get('to') || hashParams.get('redirect');
+
+          if (p) {
+            window.location.replace(window.location.origin + '/#/product/' + encodeURIComponent(p));
+          } else if (track) {
+            window.location.replace(window.location.origin + '/#/track-order?phone=' + encodeURIComponent(track) + (email ? '&email=' + encodeURIComponent(email) : ''));
+          } else if (to) {
+            window.location.replace(window.location.origin + '/#/' + to);
+          }
+        } catch(e) {}
+      })();
+
+      // Intercept PWA install prompt early before React components mount
+      window.deferredPWAInstallPrompt = null;
+      window.addEventListener('beforeinstallprompt', function(e) {
+        e.preventDefault();
+        window.deferredPWAInstallPrompt = e;
+        window.dispatchEvent(new CustomEvent('pwa-prompt-ready'));
+      });
+      window.addEventListener('appinstalled', function() {
+        window.deferredPWAInstallPrompt = null;
+        window.dispatchEvent(new CustomEvent('pwa-app-installed'));
+      });
+    </script>
+    
+    <!-- Primary Meta Tags -->
+    <title>Ali Cart | Premium E-Commerce Store</title>
+    <meta name="title" content="Ali Cart | Premium E-Commerce Store" />
+    <meta name="description" content="A high-performance, mobile-friendly multi-vendor e-commerce platform with AI-powered search, premium UX, and technical SEO optimization." />
+    <meta name="keywords" content="Ali Cart, e-commerce, online shopping, electronics, fashion, multi-vendor marketplace, verified products" />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Ali Cart" />
+    <meta property="og:title" content="Ali Cart | Premium E-Commerce Store" />
+    <meta property="og:description" content="A high-performance, mobile-friendly multi-vendor e-commerce platform with AI-powered search, premium UX, and technical SEO optimization." />
+    <meta property="og:image" content="/favicon.svg" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Ali Cart | Premium E-Commerce Store" />
+    <meta name="twitter:description" content="A high-performance, mobile-friendly multi-vendor e-commerce platform with AI-powered search, premium UX, and technical SEO optimization." />
+    <meta name="twitter:image" content="/favicon.svg" />
+</head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
+  </body>
+</html>

@@ -1,0 +1,27 @@
+# SEO Robots.txt
+# Generated during build for Cloudflare Pages
+
+User-agent: *
+Allow: /
+Allow: /categories
+Allow: /search
+Allow: /updates
+Allow: /blog
+Allow: /track-order
+Allow: /community
+Allow: /more
+
+# Disallow Private & Administrative Routes
+Disallow: /admin
+Disallow: /admin/
+Disallow: /admin/*
+Disallow: /vendor/dashboard
+Disallow: /vendor/*
+Disallow: /checkout
+Disallow: /order-success
+
+# Crawl-delay for crawler protection
+Crawl-delay: 1
+
+# Canonical Sitemap
+Sitemap: https://ali-cart.pages.dev/sitemap.xml

@@ -1,0 +1,8 @@
+{
+  "name": "Ali Cart | Premium E-Commerce Store",
+  "description": "Luxury baby and kids clothing boutique with instant AI-powered search, responsive mobile commerce, and verified vendor branding.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
