@@ -237,7 +237,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
       };
       await setDoc(doc(db, 'settings', 'catalog_bundle'), sanitizeForFirestore(bundleToSave), { merge: true });
       try {
-        sessionStorage.setItem(CATALOG_SESSION_CACHE_KEY, JSON.stringify(bundleToSave));
+        sessionStorage.setItem(CATALOG_SESSION_CACHE_KEY, safeJsonStringify(bundleToSave));
       } catch (e) {}
     } catch (e) {
       console.warn("Could not sync catalog bundle:", e);
@@ -544,7 +544,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
         const bundleData = bundleSnap.data() as CatalogBundle;
         applyBundleData(bundleData);
         try {
-          sessionStorage.setItem(CATALOG_SESSION_CACHE_KEY, JSON.stringify(bundleData));
+          sessionStorage.setItem(CATALOG_SESSION_CACHE_KEY, safeJsonStringify(bundleData));
         } catch (e) {}
         setIsLoading(false);
         return; // EXACTLY 1 FIRESTORE READ FOR THE ENTIRE STORE!
@@ -594,7 +594,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
 
       applyBundleData(compiledBundle);
       try {
-        sessionStorage.setItem(CATALOG_SESSION_CACHE_KEY, JSON.stringify(compiledBundle));
+        sessionStorage.setItem(CATALOG_SESSION_CACHE_KEY, safeJsonStringify(compiledBundle));
       } catch (e) {}
 
       // Write bundle so all future visits only take 1 read

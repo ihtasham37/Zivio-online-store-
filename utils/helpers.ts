@@ -34,13 +34,19 @@ export const normalizePhone = (phone: string): string => {
 
 export const safeJsonStringify = (obj: any): string => {
   try {
-    const cache = new WeakSet();
+    const seen = new WeakSet();
     return JSON.stringify(obj, (key, value) => {
+      if (typeof value === 'function' || typeof value === 'symbol') {
+        return undefined;
+      }
+      if (typeof window !== 'undefined' && (value instanceof Element || value instanceof Node || value instanceof Window)) {
+        return undefined;
+      }
       if (typeof value === 'object' && value !== null) {
-        if (cache.has(value)) {
-          return; // Circular reference found, discard key
+        if (seen.has(value)) {
+          return undefined; // Circular reference found, discard key
         }
-        cache.add(value);
+        seen.add(value);
       }
       return value;
     });
@@ -49,7 +55,7 @@ export const safeJsonStringify = (obj: any): string => {
     try {
       return String(obj);
     } catch (e) {
-      return "[Unstringifiable Object]";
+      return "{}";
     }
   }
 };
@@ -66,22 +72,33 @@ export const generateCartItemKey = (item: { id: string; selectedSizes?: Record<s
   return `${item.id}-${sizesKey}`;
 };
 
-export const sanitizeForFirestore = (obj: any): any => {
+export const sanitizeForFirestore = (obj: any, seen = new WeakSet()): any => {
   if (obj === null || obj === undefined) return null;
-  if (Array.isArray(obj)) {
-    return obj.map(item => sanitizeForFirestore(item));
+  if (typeof obj === 'function' || typeof obj === 'symbol') return undefined;
+  if (typeof window !== 'undefined' && (obj instanceof Element || obj instanceof Node || obj instanceof Window)) {
+    return undefined;
   }
-  if (typeof obj === 'object') {
-    const cleaned: any = {};
-    for (const key of Object.keys(obj)) {
-      const val = obj[key];
-      if (val !== undefined) {
-        cleaned[key] = sanitizeForFirestore(val);
+  if (typeof obj !== 'object') return obj;
+  if (seen.has(obj)) return undefined; // Break circular reference
+  seen.add(obj);
+
+  if (Array.isArray(obj)) {
+    return obj
+      .map(item => sanitizeForFirestore(item, seen))
+      .filter(item => item !== undefined);
+  }
+
+  const cleaned: any = {};
+  for (const key of Object.keys(obj)) {
+    const val = obj[key];
+    if (val !== undefined) {
+      const sanitized = sanitizeForFirestore(val, seen);
+      if (sanitized !== undefined) {
+        cleaned[key] = sanitized;
       }
     }
-    return cleaned;
   }
-  return obj;
+  return cleaned;
 };
 
 export const getSelectedSizesEntries = (selectedSizes: any): [string, any][] => {

@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useStore } from '../hooks/useStore';
-import { formatCurrency } from '../utils/helpers';
+import { formatCurrency, safeJsonStringify } from '../utils/helpers';
 import { Button } from '../components/ui/Button';
 import { Spinner } from '../components/ui/Spinner';
 import { MediaPreview } from '../components/ui/MediaPreview';
@@ -146,7 +146,7 @@ const ProductDetail = () => {
           const stored = localStorage.getItem('user_interests') || '{}';
           const interests = JSON.parse(stored);
           interests[product.category] = (interests[product.category] || 0) + 1;
-          localStorage.setItem('user_interests', JSON.stringify(interests));
+          localStorage.setItem('user_interests', safeJsonStringify(interests));
         } catch (e) {
           // ignore storage errors
         }
