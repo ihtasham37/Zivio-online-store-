@@ -303,13 +303,13 @@ const Home = () => {
     <div className="space-y-6">
       <SEO 
         title="Online Shopping - Best Deals & Verified Products" 
-        description={`Welcome to ${settings?.appName || 'Ali Cart'}. Discover a wide range of premium electronics, fashion, and everyday essentials with verified seller guarantees and fast nationwide shipping.`}
-        keywords={['online store', 'ecommerce', 'best deals', 'discount coupons', 'shopping', settings?.appName || 'Ali Cart']}
+        description={`Welcome to ${settings?.appName || 'Zivio'}. Discover a wide range of premium electronics, fashion, and everyday essentials with verified seller guarantees and fast nationwide shipping.`}
+        keywords={['online store', 'ecommerce', 'best deals', 'discount coupons', 'shopping', settings?.appName || 'Zivio']}
         schema={[
             {
                 "@context": "https://schema.org",
                 "@type": "WebSite",
-                "name": settings?.appName || "Ali Cart",
+                "name": settings?.appName || "Zivio",
                 "url": typeof window !== 'undefined' ? window.location.origin : '',
                 "potentialAction": {
                     "@type": "SearchAction",
@@ -320,7 +320,7 @@ const Home = () => {
             {
                 "@context": "https://schema.org",
                 "@type": "Organization",
-                "name": settings?.appName || "Ali Cart",
+                "name": settings?.appName || "Zivio",
                 "url": typeof window !== 'undefined' ? window.location.origin : '',
                 "logo": settings?.logoUrl || `${typeof window !== 'undefined' ? window.location.origin : ''}/favicon.svg`
             }

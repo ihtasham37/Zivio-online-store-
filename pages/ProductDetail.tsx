@@ -218,7 +218,7 @@ const ProductDetail = () => {
     <div className="container mx-auto" key={id}>
       <SEO 
         title={product.name} 
-        description={product.description || `Buy ${product.name} at ${settings?.appName || 'Ali Cart'}. Price: ${formatCurrency(product.price)}.`}
+        description={product.description || `Buy ${product.name} at ${settings?.appName || 'Zivio'}. Price: ${formatCurrency(product.price)}.`}
         image={product.images?.[0]}
         schema={{
             "@context": "https://schema.org",
@@ -235,7 +235,7 @@ const ProductDetail = () => {
                 "availability": "https://schema.org/InStock",
                 "seller": {
                     "@type": "Organization",
-                    "name": product.shopName || settings?.appName || "Ali Cart"
+                    "name": product.shopName || settings?.appName || "Zivio"
                 }
             }
         }}

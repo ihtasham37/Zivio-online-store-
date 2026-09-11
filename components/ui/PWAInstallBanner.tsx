@@ -7,7 +7,7 @@ import { useStore } from '../../hooks/useStore';
 export const PWAInstallBanner = () => {
     const { isInstallable, isInstalled, isIOS, installPWA } = usePWAInstall();
     const { settings } = useStore();
-    const appName = settings?.appName || 'Ali Cart';
+    const appName = settings?.appName || 'Zivio';
 
     const [isVisible, setIsVisible] = useState(false);
     const [showIOSGuide, setShowIOSGuide] = useState(false);

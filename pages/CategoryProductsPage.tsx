@@ -95,7 +95,7 @@ const CategoryProductsPage = () => {
         <div className="container mx-auto">
             <SEO 
                 title={`${currentCategory.name} - Shop Collection`}
-                description={`Browse ${currentCategory.name} products at ${settings?.appName || 'Ali Cart'}. Discover amazing discounts and quality assured products.`}
+                description={`Browse ${currentCategory.name} products at ${settings?.appName || 'Zivio'}. Discover amazing discounts and quality assured products.`}
                 keywords={[currentCategory.name, 'online shopping', 'deals']}
                 schema={{
                     "@context": "https://schema.org",

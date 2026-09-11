@@ -363,7 +363,7 @@ Return pure JSON matching the requested schema.
 
 // Dynamic Sitemap Route
 app.get("/sitemap.xml", (req, res) => {
-  const baseUrl = "https://ali-cart.com"; 
+  const baseUrl = process.env.SITE_URL || "https://zivio.pages.dev"; 
   const pages = ["", "/blog", "/categories", "/more", "/community"];
   
   let xml = `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`;

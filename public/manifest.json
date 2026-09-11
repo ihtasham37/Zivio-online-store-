@@ -1,13 +1,13 @@
 {
   "id": "/",
-  "name": "Ali Cart",
-  "short_name": "Ali Cart",
+  "name": "Zivio",
+  "short_name": "Zivio",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#0d9488",
-  "description": "A complete, mobile-friendly e-commerce website with fast shopping and verified products.",
+  "theme_color": "#be185d",
+  "description": "Zivio - A complete, mobile-friendly e-commerce store with fast shopping and verified products.",
   "icons": [
     {
       "src": "/pwa-192x192.png",

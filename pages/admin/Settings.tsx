@@ -25,7 +25,8 @@ const Settings = () => {
     useEffect(() => {
         if (settings) {
             const settingsCopy: SettingsType = {
-                appName: settings.appName || 'Store',
+                appName: settings.appName || 'Zivio',
+                storeDomain: settings.storeDomain || 'https://zivio.pages.dev',
                 logoUrl: settings.logoUrl || '',
                 storeBannerUrl: settings.storeBannerUrl || '',
                 bannerUrls: [...(settings.bannerUrls || [])],
@@ -105,7 +106,8 @@ const Settings = () => {
 
     const initializeSettings = async () => {
         const defaultSettings: SettingsType = {
-            appName: 'Store',
+            appName: 'Zivio',
+            storeDomain: 'https://zivio.pages.dev',
             bannerUrls: [],
             shippingFee: 0,
             whatsappNumber: '+923001234567',

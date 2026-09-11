@@ -13,7 +13,7 @@ const resolveBaseUrl = (): string => {
     process.env.SITE_URL ||
     process.env.CF_PAGES_URL ||
     process.env.VITE_SITE_URL ||
-    'https://ali-cart.pages.dev';
+    'https://zivio.pages.dev';
 
   return envUrl.trim().replace(/\/+$/, '');
 };

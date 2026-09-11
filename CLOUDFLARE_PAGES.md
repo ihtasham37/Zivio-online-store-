@@ -1,4 +1,4 @@
-# Cloudflare Pages Deployment Guide (علی کارٹ / Ali Cart)
+# Cloudflare Pages Deployment Guide (Zivio)
 
 Yeh app ab **Cloudflare Pages** per host hone ke liye mukammal tor per tayyar (fully configured) hai.
 
@@ -10,7 +10,7 @@ Yeh app ab **Cloudflare Pages** per host hone ke liye mukammal tor per tayyar (f
 Apne project ko GitHub ya GitLab repository mein push karein:
 ```bash
 git add .
-git commit -m "Cloudflare Pages configuration ready"
+git commit -m "Cloudflare Pages configuration ready for Zivio"
 git push origin main
 ```
 
@@ -29,8 +29,8 @@ Jab Cloudflare repository select karega, yeh settings set karein:
 
 | Setting | Value |
 | :--- | :--- |
-| **Framework preset** | `Vite` |
-| **Build command** | `npm run build:pages` ya `npm run build` |
+| **Framework preset** | `React (Vite)` |
+| **Build command** | `npm run build` |
 | **Build output directory** | `dist` |
 | **Root directory** | `/` (leave empty or slash) |
 
@@ -39,21 +39,27 @@ Jab Cloudflare repository select karega, yeh settings set karein:
 ### 4. Environment Variables (Zaroori Settings)
 **Environment variables (advanced)** section mein yeh variables add karein:
 
-| Variable Name | Description |
+| Variable Name | Value / Description |
 | :--- | :--- |
 | `NODE_VERSION` | `20` |
-| `GEMINI_API_KEY` | Aapki Google Gemini API Key (AI Search & RAG ke liye) |
-| `CLOUDINARY_CLOUD_NAME` | Cloudinary cloud name (agar images upload karni hain) |
-| `CLOUDINARY_API_KEY` | Cloudinary API Key |
-| `CLOUDINARY_API_SECRET` | Cloudinary API Secret |
-| `BACKEND_URL` | *(Optional)* Agar aapka alag backend server chal raha ho |
+| `VITE_FIREBASE_API_KEY` | `AIzaSyCnVWIVy4szPh5mtgqZR7o7FU1NdZKhDBM` |
+| `VITE_FIREBASE_AUTH_DOMAIN` | `e-commerse-ca95f.firebaseapp.com` |
+| `VITE_FIREBASE_DATABASE_URL` | `https://e-commerse-ca95f-default-rtdb.firebaseio.com` |
+| `VITE_FIREBASE_PROJECT_ID` | `e-commerse-ca95f` |
+| `VITE_FIREBASE_STORAGE_BUCKET` | `e-commerse-ca95f.firebasestorage.app` |
+| `VITE_FIREBASE_MESSAGING_SENDER_ID` | `186543384543` |
+| `VITE_FIREBASE_APP_ID` | `1:186543384543:web:db1bc7a80f750f994c066a` |
+| `GEMINI_API_KEY` | `AIzaSyDlLGz_GjqXXlQ7o8333ZqDgSmdcxKO_HA` |
+| `CLOUDINARY_CLOUD_NAME` | `daafqfrqh` |
+| `CLOUDINARY_API_KEY` | `551261625733394` |
+| `CLOUDINARY_API_SECRET` | `7k8Cn1_vuMPuD3wv8KY79AJcxCw` |
 
 ---
 
 ### 5. Deploy karein
 **Save and Deploy** button par click karein!
 - Cloudflare automatically aapki app compile karega.
-- 1 se 2 minute mein aapko ek free **`*.pages.dev`** domain mil jayega (e.g., `ali-cart.pages.dev`).
+- 1 se 2 minute mein aapko ek free **`*.pages.dev`** domain mil jayega (e.g., `zivio.pages.dev`).
 - **Custom Domain**: Dashboard mein ja kar aap apna personal `.com`, `.pk`, ya koi bhi custom domain 1 click mein connect kar sakte hain with **Free Cloudflare SSL**.
 
 ---

@@ -35,7 +35,7 @@ const CategoriesPage = () => {
         <div className="container mx-auto">
             <SEO 
                 title="Browse Categories"
-                description={`Explore all product categories at ${settings?.appName || 'Ali Cart'}. Find the best electronics, fashion, home goods, and more.`}
+                description={`Explore all product categories at ${settings?.appName || 'Zivio'}. Find the best electronics, fashion, home goods, and more.`}
                 schema={categoriesSchema}
                 keywords={topLevelCategories.map(c => c.name)}
             />

@@ -33,7 +33,7 @@ const AppContent = () => {
     useEffect(() => {
         if (settings) {
             const logoUrl = typeof settings.logoUrl === 'string' ? settings.logoUrl : '';
-            const appName = settings.appName || 'Ali Cart';
+            const appName = settings.appName || 'Zivio';
             document.title = appName;
 
             // Update PWA Manifest dynamically with admin shop name and logo

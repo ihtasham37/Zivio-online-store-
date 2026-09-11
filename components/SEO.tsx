@@ -34,7 +34,7 @@ export const SEO: React.FC<SEOProps> = ({
     availability = 'InStock'
 }) => {
     const { settings } = useStore();
-    const appName = settings?.appName || 'Ali Cart';
+    const appName = settings?.appName || 'Zivio';
     const defaultDescription = 'A high-performance, mobile-friendly multi-vendor e-commerce platform with AI-powered search and verified products.';
     const siteUrl = typeof window !== 'undefined' ? window.location.origin : '';
     const currentUrl = typeof window !== 'undefined' ? (canonical || window.location.href) : '';

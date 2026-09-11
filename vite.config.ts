@@ -13,7 +13,7 @@ export default defineConfig(({ mode }) => {
 
   return {
     plugins: [react()],
-    base: process.env.CF_PAGES ? '/' : './', // Cloudflare Pages uses root '/', subfolder hostings use './'
+    base: '/',
     resolve: {
       alias: {
         "@": path.resolve("./"),
