@@ -9,6 +9,7 @@ import { Spinner } from '../../components/ui/Spinner';
 import { Icons } from '../../components/icons/Icons';
 import { safeLower } from '../../utils/helpers';
 import { ImageWithFallback } from '../../components/ui/ImageWithFallback';
+import { LogoAdjusterModal } from '../../components/admin/LogoAdjusterModal';
 
 const Settings = () => {
     const { settings, updateSettings, isLoading, uploadFile, deleteFile } = useStore();
@@ -21,6 +22,8 @@ const Settings = () => {
     const [bannerUrl, setBannerUrl] = useState('');
     const [logoInputMode, setLogoInputMode] = useState<'upload' | 'url'>('upload');
     const [storeBannerInputMode, setStoreBannerInputMode] = useState<'upload' | 'url'>('upload');
+    const [isAdjusterOpen, setIsAdjusterOpen] = useState<boolean>(false);
+    const [adjusterImageSrc, setAdjusterImageSrc] = useState<string>('');
     
     useEffect(() => {
         if (settings) {
@@ -70,21 +73,42 @@ const Settings = () => {
         }
     };
 
-    const handleLogoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleLogoFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
-        if (!file || !formData) return;
+        if (!file) return;
 
+        const reader = new FileReader();
+        reader.onload = (uploadEvent) => {
+            if (uploadEvent.target?.result) {
+                setAdjusterImageSrc(uploadEvent.target.result as string);
+                setIsAdjusterOpen(true);
+            }
+        };
+        reader.readAsDataURL(file);
+        e.target.value = '';
+    };
+
+    const handleApplyAdjustedLogo = async (processedFile: File) => {
+        if (!formData) return;
         const oldUrl = formData.logoUrl;
         setIsSaving(true);
         try {
-            const url = await uploadFile(file);
+            const url = await uploadFile(processedFile);
             setFormData({ ...formData, logoUrl: url });
-            if (oldUrl) await deleteFile(oldUrl);
+            if (oldUrl && oldUrl.startsWith('http') && !oldUrl.includes('data:')) {
+                await deleteFile(oldUrl).catch(() => {});
+            }
         } catch (err: any) {
             alert(err.message || 'An error occurred during logo upload.');
         } finally {
             setIsSaving(false);
         }
+    };
+
+    const handleOpenAdjusterForExisting = () => {
+        if (!formData?.logoUrl) return;
+        setAdjusterImageSrc(formData.logoUrl);
+        setIsAdjusterOpen(true);
     };
 
     const handleStoreBannerUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -217,39 +241,78 @@ const Settings = () => {
                             <Input label="Admin Contact Email" type="email" value={formData.adminEmail} onChange={e => setFormData({...formData, adminEmail: e.target.value})} />
                         </div>
                         <div className="space-y-6 border-l md:border-l-0 md:pl-0 pl-4 border-gray-100 flex flex-col justify-start">
-                            {/* Store Logo Row */}
-                            <div className="space-y-2">
-                                <h3 className="font-bold text-sm text-gray-700">Store Logo</h3>
-                                <div className="flex items-center gap-4">
-                                    <div className="w-16 h-16 rounded-full border-2 border-dashed border-gray-300 flex items-center justify-center bg-gray-50 overflow-hidden flex-shrink-0">
-                                        {formData.logoUrl ? (
-                                            <img src={formData.logoUrl} className="w-full h-full object-cover" alt="Logo" />
-                                        ) : (
-                                            <div className="w-full h-full flex items-center justify-center bg-teal-100 text-teal-600 font-bold uppercase text-xl">
-                                                {formData.appName?.[0] || 'S'}
-                                            </div>
+                            {/* Store & Mobile App Logo Box */}
+                            <div className="bg-gradient-to-br from-rose-50/50 to-amber-50/40 p-4 rounded-2xl border border-rose-100 space-y-4">
+                                <div className="flex items-center justify-between">
+                                    <div>
+                                        <h3 className="font-extrabold text-sm text-slate-800 flex items-center gap-1.5">
+                                            <span>📱 App Logo & Mobile Branding</span>
+                                            <span className="text-[10px] bg-rose-100 text-rose-700 px-2 py-0.5 rounded-full font-bold">
+                                                ایپ کا لوگو
+                                            </span>
+                                        </h3>
+                                        <p className="text-xs text-slate-500 mt-0.5">
+                                            This logo appears on the mobile top navbar, splash screen, and home screen app icon.
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div className="flex flex-wrap sm:flex-nowrap items-start gap-4">
+                                    {/* Main Logo Preview (Always Circular) */}
+                                    <div className="flex flex-col items-center gap-1.5 shrink-0">
+                                        <div className="w-20 h-20 rounded-full border-2 border-rose-300 shadow-md flex items-center justify-center bg-white overflow-hidden p-1 aspect-square">
+                                            {formData.logoUrl ? (
+                                                <img src={formData.logoUrl} className="w-full h-full object-cover rounded-full aspect-square" alt="App Logo" />
+                                            ) : (
+                                                <div className="w-full h-full flex items-center justify-center bg-rose-50 text-rose-600 font-extrabold text-2xl font-serif rounded-full">
+                                                    {formData.appName?.[0] || 'Z'}
+                                                </div>
+                                            )}
+                                        </div>
+                                        <span className="text-[10px] font-bold text-slate-500">⭕ Circular Logo</span>
+                                        {formData.logoUrl && (
+                                            <button
+                                                type="button"
+                                                onClick={handleOpenAdjusterForExisting}
+                                                className="text-[10px] font-bold text-rose-700 bg-rose-100/80 hover:bg-rose-200 px-2 py-0.5 rounded-full transition-colors flex items-center gap-1 shadow-2xs"
+                                            >
+                                                🔍 Zoom / Adjust
+                                            </button>
                                         )}
                                     </div>
-                                    <div className="flex-1 space-y-2">
-                                        <div className="flex gap-2">
+
+                                    {/* Upload / URL Controls */}
+                                    <div className="flex-1 space-y-2.5 min-w-[200px]">
+                                        <div className="flex flex-wrap gap-2">
                                             <Button 
                                                 type="button" 
                                                 size="sm" 
                                                 variant={logoInputMode === 'upload' ? 'primary' : 'secondary'} 
-                                                className="px-3 py-1 h-8 text-xs"
+                                                className="px-3 py-1 h-8 text-xs font-bold"
                                                 onClick={() => setLogoInputMode('upload')}
                                             >
-                                                Upload File
+                                                Upload &amp; Zoom
                                             </Button>
                                             <Button 
                                                 type="button" 
                                                 size="sm" 
                                                 variant={logoInputMode === 'url' ? 'primary' : 'secondary'} 
-                                                className="px-3 py-1 h-8 text-xs"
+                                                className="px-3 py-1 h-8 text-xs font-bold"
                                                 onClick={() => setLogoInputMode('url')}
                                             >
-                                                Add URL
+                                                Image URL
                                             </Button>
+                                            {formData.logoUrl && (
+                                                <Button
+                                                    type="button"
+                                                    size="sm"
+                                                    variant="secondary"
+                                                    className="px-2 py-1 h-8 text-xs text-rose-600 hover:bg-rose-50"
+                                                    onClick={() => setFormData({ ...formData, logoUrl: '' })}
+                                                >
+                                                    Remove
+                                                </Button>
+                                            )}
                                         </div>
                                         
                                         {logoInputMode === 'upload' ? (
@@ -257,9 +320,12 @@ const Settings = () => {
                                                 <input 
                                                     type="file" 
                                                     accept="image/*" 
-                                                    onChange={handleLogoUpload} 
-                                                    className="block w-full text-xs text-gray-500 file:mr-2 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-teal-50 file:text-teal-700 hover:file:bg-teal-100 cursor-pointer"
+                                                    onChange={handleLogoFileSelect} 
+                                                    className="block w-full text-xs text-slate-500 file:mr-2 file:py-2 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-rose-600 file:text-white hover:file:bg-rose-700 cursor-pointer shadow-xs"
                                                 />
+                                                <p className="text-[10px] text-slate-500 mt-1">
+                                                    ⚡ Selecting an image opens the <strong>Interactive Circular Cropper &amp; Zoom Adjuster</strong> (لوگو زوم اور گول ایڈجسٹمنٹ).
+                                                </p>
                                             </div>
                                         ) : (
                                             <Input 
@@ -269,6 +335,60 @@ const Settings = () => {
                                                 className="text-xs py-1 h-8"
                                             />
                                         )}
+                                    </div>
+                                </div>
+
+                                {/* Live Mobile Screen Mockup Preview */}
+                                <div className="mt-3 pt-3 border-t border-rose-100/80">
+                                    <div className="text-xs font-bold text-slate-700 mb-2 flex items-center gap-1">
+                                        <span>📱 Live Mobile Screen Preview (موبائل اسکرین پر گول لوگو)</span>
+                                    </div>
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                        {/* Mobile Header Preview */}
+                                        <div className="bg-white p-2.5 rounded-xl border border-rose-200 shadow-xs space-y-1">
+                                            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">
+                                                1. Mobile Header (ٹاپ بار)
+                                            </span>
+                                            <div className="h-10 bg-white/95 rounded-lg border border-rose-100 flex items-center px-2 gap-2 shadow-inner">
+                                                <div className="w-7 h-7 rounded-full border border-rose-300 overflow-hidden shrink-0 flex items-center justify-center bg-rose-50 aspect-square">
+                                                    {formData.logoUrl ? (
+                                                        <img src={formData.logoUrl} alt="Logo" className="w-full h-full object-cover rounded-full" />
+                                                    ) : (
+                                                        <span className="text-[10px] font-bold text-rose-600">{formData.appName?.[0] || 'Z'}</span>
+                                                    )}
+                                                </div>
+                                                <div className="min-w-0 flex-1">
+                                                    <div className="text-[11px] font-extrabold font-serif text-rose-800 truncate leading-tight">
+                                                        {formData.appName || 'Store'}
+                                                    </div>
+                                                    <div className="text-[8px] text-amber-700 font-semibold leading-none">
+                                                        Luxury Kids Wear
+                                                    </div>
+                                                </div>
+                                                <div className="w-16 h-5 bg-rose-50 rounded-full border border-rose-100 flex items-center px-1.5 text-[8px] text-slate-400">
+                                                    Search...
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        {/* Mobile App Icon Preview */}
+                                        <div className="bg-white p-2.5 rounded-xl border border-rose-200 shadow-xs space-y-1">
+                                            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">
+                                                2. Mobile App Icon (موبائل ہوم اسکرین)
+                                            </span>
+                                            <div className="h-10 bg-slate-900 rounded-lg flex items-center px-3 gap-2 shadow-inner">
+                                                <div className="w-7 h-7 rounded-full bg-white p-0.5 shadow-md flex items-center justify-center overflow-hidden border border-white/40 shrink-0 aspect-square">
+                                                    {formData.logoUrl ? (
+                                                        <img src={formData.logoUrl} alt="App Icon" className="w-full h-full object-cover rounded-full" />
+                                                    ) : (
+                                                        <span className="text-xs font-bold text-rose-600">{formData.appName?.[0] || 'Z'}</span>
+                                                    )}
+                                                </div>
+                                                <span className="text-[11px] font-bold text-white truncate">
+                                                    {formData.appName || 'Store'}
+                                                </span>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -491,6 +611,15 @@ const Settings = () => {
                     <p className="text-sm text-gray-500 mb-2">To change your admin password, please use the Firebase Authentication console.</p>
                 </div>
             </div>
+
+            {/* Circular Logo Adjuster & Cropper Modal */}
+            <LogoAdjusterModal
+                isOpen={isAdjusterOpen}
+                onClose={() => setIsAdjusterOpen(false)}
+                imageSrc={adjusterImageSrc}
+                onApply={handleApplyAdjustedLogo}
+                appName={formData?.appName || 'Store'}
+            />
         </div>
     );
 };

@@ -42,10 +42,36 @@ const MorePage = () => {
     ].filter(item => item.show !== false);
 
     return (
-        <div className="container mx-auto">
-            <h1 className="text-3xl font-bold text-gray-800 mb-6 text-center">More Options</h1>
+        <div className="container mx-auto px-4 max-w-md pb-6 space-y-5">
+            {/* App & Store Brand Header Card */}
+            <div className="bg-gradient-to-r from-rose-700 via-rose-600 to-amber-600 rounded-2xl p-5 text-white shadow-md flex items-center gap-4">
+                <div className="w-16 h-16 rounded-full bg-white/20 p-1 backdrop-blur-md shrink-0 flex items-center justify-center overflow-hidden border-2 border-white/60 shadow-md aspect-square">
+                    {settings?.logoUrl ? (
+                        <img 
+                            src={settings.logoUrl} 
+                            alt={settings.appName || 'App Logo'} 
+                            className="w-full h-full object-cover rounded-full bg-white aspect-square" 
+                        />
+                    ) : (
+                        <div className="text-2xl font-extrabold font-serif text-white">
+                            {settings?.appName?.[0] || '✨'}
+                        </div>
+                    )}
+                </div>
+                <div className="min-w-0">
+                    <h2 className="text-xl font-bold font-serif truncate leading-tight">
+                        {settings?.appName || 'Baby Boutique'}
+                    </h2>
+                    <p className="text-xs text-rose-100/90 font-medium mt-0.5">
+                        Official Mobile App & Store
+                    </p>
+                    <span className="inline-block mt-1 px-2 py-0.5 rounded-full bg-white/20 text-[10px] font-bold text-amber-200 border border-white/20">
+                        v1.0 • PWA Ready
+                    </span>
+                </div>
+            </div>
             
-            <div className="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden border border-gray-100">
+            <div className="bg-white rounded-xl shadow-sm overflow-hidden border border-rose-100">
                 <ul className="divide-y divide-gray-200">
                     {listItems.map((item) => (
                          <li key={item.label}>

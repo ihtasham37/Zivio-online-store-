@@ -83,12 +83,20 @@ export const Navbar = () => {
     <header className="fixed top-0 left-0 right-0 z-40 h-14 bg-white/95 backdrop-blur-md border-b border-rose-100 shadow-xs transition-all">
       <div className="container mx-auto px-2 sm:px-4 flex justify-between items-center h-full gap-1.5 sm:gap-4">
         {/* Website Logo with Luxury Baby Branding */}
-        <Link to="/" className="flex items-center gap-1 sm:gap-1.5 shrink-0 group">
-          <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-gradient-to-tr from-rose-500 to-amber-400 p-0.5 shadow-xs flex items-center justify-center text-white shrink-0">
-            <span className="text-xs sm:text-base font-bold">✨</span>
-          </div>
+        <Link to="/" className="flex items-center gap-1.5 sm:gap-2 shrink-0 group">
+          {settings?.logoUrl ? (
+            <img 
+              src={settings.logoUrl} 
+              alt={settings.appName || 'App Logo'} 
+              className="w-8 h-8 sm:w-9 sm:h-9 rounded-full object-cover border-2 border-rose-300 shadow-xs shrink-0 aspect-square overflow-hidden group-hover:scale-105 transition-transform" 
+            />
+          ) : (
+            <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-gradient-to-tr from-rose-500 to-amber-400 p-0.5 shadow-xs flex items-center justify-center text-white shrink-0 aspect-square group-hover:scale-105 transition-transform">
+              <span className="text-xs sm:text-base font-extrabold font-serif">{settings?.appName?.[0] || '✨'}</span>
+            </div>
+          )}
           <div className="flex flex-col min-w-0">
-            <span className="text-xs sm:text-base font-extrabold font-serif text-rose-800 tracking-tight group-hover:text-rose-600 transition-colors leading-none truncate max-w-[85px] sm:max-w-none">
+            <span className="text-xs sm:text-base font-extrabold font-serif text-rose-800 tracking-tight group-hover:text-rose-600 transition-colors leading-none truncate max-w-[95px] sm:max-w-none">
               {settings?.appName || 'Baby Boutique'}
             </span>
             <span className="hidden xs:inline-block text-[8px] sm:text-[9px] font-semibold text-amber-700/90 uppercase tracking-wider leading-none mt-0.5">

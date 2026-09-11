@@ -14,8 +14,16 @@ export const SplashScreen = () => {
                 transition={{ duration: 0.5, ease: "easeOut" }}
                 className="flex flex-col items-center"
             >
-                <div className="bg-gradient-to-tr from-rose-600 to-amber-500 p-4 rounded-3xl shadow-2xl mb-4">
-                    <Icons.logo className="w-20 h-20 text-white" />
+                <div className="bg-gradient-to-tr from-rose-600 via-rose-500 to-amber-400 p-1.5 rounded-full shadow-2xl mb-4 overflow-hidden w-28 h-28 aspect-square flex items-center justify-center border-4 border-rose-100 ring-4 ring-rose-50">
+                    {settings?.logoUrl ? (
+                        <img 
+                            src={settings.logoUrl} 
+                            alt={settings.appName || 'Logo'} 
+                            className="w-full h-full object-cover rounded-full bg-white aspect-square shadow-inner" 
+                        />
+                    ) : (
+                        <Icons.logo className="w-16 h-16 text-white p-2" />
+                    )}
                 </div>
                 <motion.h1 
                     initial={{ y: 20, opacity: 0 }}

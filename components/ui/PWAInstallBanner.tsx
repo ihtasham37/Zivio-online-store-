@@ -90,9 +90,9 @@ export const PWAInstallBanner = () => {
                 <div className="bg-white/95 backdrop-blur-md rounded-2xl p-4 shadow-2xl border border-rose-200/80 ring-1 ring-rose-100/50 text-slate-800">
                     <div className="flex items-start justify-between gap-3">
                         <div className="flex items-center gap-3">
-                            <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-rose-500 via-rose-600 to-amber-500 flex items-center justify-center text-white shadow-md shrink-0">
+                            <div className="w-11 h-11 rounded-full bg-gradient-to-br from-rose-500 via-rose-600 to-amber-500 p-0.5 flex items-center justify-center text-white shadow-md shrink-0 aspect-square overflow-hidden">
                                 {settings?.logoUrl ? (
-                                    <img src={settings.logoUrl} alt={appName} className="w-7 h-7 object-contain rounded-lg" />
+                                    <img src={settings.logoUrl} alt={appName} className="w-full h-full object-cover rounded-full bg-white" />
                                 ) : (
                                     <Icons.logo className="w-6 h-6 text-white" />
                                 )}
@@ -202,9 +202,9 @@ export const PWAInstallBanner = () => {
                     <div className="w-full max-w-sm rounded-2xl bg-white p-5 shadow-2xl border border-rose-100">
                         <div className="flex items-center justify-between pb-3 border-b border-rose-100">
                             <div className="flex items-center gap-2">
-                                <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-rose-500 to-amber-500 flex items-center justify-center text-white overflow-hidden shadow-xs">
+                                <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-rose-500 to-amber-500 flex items-center justify-center text-white overflow-hidden shadow-xs shrink-0 aspect-square">
                                     {settings?.logoUrl ? (
-                                        <img src={settings.logoUrl} alt={appName} className="w-full h-full object-cover" />
+                                        <img src={settings.logoUrl} alt={appName} className="w-full h-full object-cover rounded-full bg-white" />
                                     ) : (
                                         <Icons.logo className="w-5 h-5 text-white" />
                                     )}
